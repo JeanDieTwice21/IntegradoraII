@@ -7,6 +7,7 @@ public class Capsule{
     private String workerName;
     private String workerCharge;
     private String lection;
+    private boolean approveStatus;
 
     public Capsule(String id, String description, String workerName, String workerCharge, String lection){
 
@@ -15,6 +16,7 @@ public class Capsule{
         this.workerName = workerName;
         this.workerCharge = workerCharge;
         this.lection = lection;
-        
+        this.status = false;
+
     }
 }

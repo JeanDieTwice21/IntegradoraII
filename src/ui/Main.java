@@ -1,4 +1,7 @@
 package ui;
+import model.CapsuleManage;
+import model.ProjectManage;
+import java.util.Scanner;
 
 public class Main{
 
@@ -24,6 +27,6 @@ public class Main{
         System.out.println("11. Exit.");
         System.out.println(" ");
         System.out.println("--------------------------------------------");
-        
+
     }
 }

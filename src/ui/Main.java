@@ -149,8 +149,8 @@ public class Main{
         
         String projectName = "";
         String clientName = "";
-        Calendar expectedStartDate = "";
-        Calendar expectedEndDate = "";
+        Calendar expectedStartDate; 
+        Calendar expectedEndDate;
         double budget = 0.0;
         
         System.out.println("Type the name of the project: ");
@@ -160,13 +160,13 @@ public class Main{
         reader.next();
         clientName = reader.nextLine();
         System.out.println("Type the expected start date");
-        expectedStartDate = reader.next();
+      //  expectedStartDate = reader.next();
         System.out.println("Type the expected end date");
-        expectedEndDate = reader.next();
-        System.out.printlln("Type the budget of the project");
+      //  expectedEndDate = reader.next();
+        System.out.println("Type the budget of the project");
         budget = reader.nextDouble();
 
-        projectController.addProject(projectName, clientName, expectedStartDate, expectedEndDate, budget);
+        projectController.addProject(projectName, clientName, budget);
 
         System.out.println("The project has been registed");
 

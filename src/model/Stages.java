@@ -1,6 +1,7 @@
 package model;
 
-public class Employee{
+public class Stages{
+
 
 
 

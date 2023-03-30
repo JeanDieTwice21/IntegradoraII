@@ -1,6 +1,7 @@
 package ui;
 import model.CapsuleManage;
 import model.ProjectManage;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Main{
@@ -27,7 +28,7 @@ public class Main{
 
             view.menu();
             choice = view.validateIntegerInput();
-            view.executeChoice();
+            view.executeChoice(choice);
 
 
 
@@ -38,7 +39,7 @@ public class Main{
 
         System.out.println("--------------------------------------------");
         System.out.println("Hello there!");
-        System.out.println(" ")
+        System.out.println(" ");
         System.out.println("Please, choose an option: ");
         System.out.println(" ");
         System.out.println("1. Create a project.");
@@ -57,7 +58,10 @@ public class Main{
         switch(choice){
 
             case 1:
-
+                
+                System.out.println("You choosed to create a project.");
+                System.out.println(" ");
+                registProject();
 
                 break;
 
@@ -68,9 +72,9 @@ public class Main{
             
             case 3:
                 
-                System.out.println("You choosed regist a capsule.")
+                System.out.println("You choosed regist a capsule.");
                 System.out.println(" ");
-                initCapsule();
+                registCapsule();
 
                 break;
 
@@ -109,29 +113,62 @@ public class Main{
         return option; 
     }
 
-    public void initCapsule(){
+    public void registCapsule(){
 
         String id = ""; 
         String description = "";
         String workerName = "";
         String workerCharge = "";
         String lection = "";
+        String type = "";
          
 
         System.out.println("Type the capsule id: "); 
         id = reader.next(); 
-        System.out.println("Type a short description: "); 
+        System.out.println("Type a short description: ");
+        reader.next(); 
         description = reader.nextLine();
+        System.out.println("Type the kind of the capsule: ");
+        type = reader.next();
         System.out.println("Type the worker name: ");
+        reader.next();
         workerName = reader.nextLine();
         System.out.println("Type the worker charge: ");
         workerCharge = reader.next();
         System.out.println("Type the lection to save: ");
+        reader.next();
         lection = reader.nextLine(); 
 
-        capsuleController.initCapsule(id, description, workerName, workerCharge, lection); 
+        capsuleController.addCapsule(id, type, description, workerName, workerCharge, lection); 
 
+        System.out.println("The capsule has been registed.");
 
     }
- 
+    
+    public void registProject(){
+        
+        String projectName = "";
+        String clientName = "";
+        Calendar expectedStartDate = "";
+        Calendar expectedEndDate = "";
+        double budget = 0.0;
+        
+        System.out.println("Type the name of the project: ");
+        reader.next();
+        projectName = reader.nextLine();
+        System.out.println("Type the name of the client: ");
+        reader.next();
+        clientName = reader.nextLine();
+        System.out.println("Type the expected start date");
+        expectedStartDate = reader.next();
+        System.out.println("Type the expected end date");
+        expectedEndDate = reader.next();
+        System.out.printlln("Type the budget of the project");
+        budget = reader.nextDouble();
+
+        projectController.addProject(projectName, clientName, expectedStartDate, expectedEndDate, budget);
+
+        System.out.println("The project has been registed");
+
+    }
 }

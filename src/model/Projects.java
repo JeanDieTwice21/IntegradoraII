@@ -18,4 +18,5 @@ public class Projects{
         this.budget = budget;
     }
 
+    public void initStages()
 }

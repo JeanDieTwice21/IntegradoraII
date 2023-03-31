@@ -67,7 +67,9 @@ public class Main{
 
             case 2:
 
-
+                System.out.println("You choosed to finish a project stage.");
+                System.out.println(" ");
+                finishStage();
                 break;
             
             case 3:
@@ -150,6 +152,8 @@ public class Main{
         String projectName = "";
         String clientName = "";
         String expectedStartDate; 
+        String expectedStartDateStage;
+        String expectedEndDateStage;
         String expectedEndDate;
         double budget = 0.0;
         
@@ -170,7 +174,25 @@ public class Main{
 
         projectController.addProject(projectName, clientName, expectedStartDate, expectedEndDate, budget);
 
-        System.out.println("The project has been registed");
+        System.out.println("Now, please, type the expected start date for the first stage: ");
+        reader.next();
+        expectedStartDateStage = reader.nextLine();
+        System.out.println("Type the expected ennd date for the first stage: ");
+        reader.next();
+        expectedEndDateStage = reader.nextLine();
+
+        projectController.initStages(expectedStartDateStage, expectedEndDateStage);
+
+        System.out.println("The project has been registed succesfully.");
+
+    }
+
+    public void finishStage(){
+
+        System.out.println("The current stage will be finished.");
+        projectController.finishStage();
+
+        System.out.println("The current stage was finished succesfully. The next stage has been initiated.");
 
     }
 }

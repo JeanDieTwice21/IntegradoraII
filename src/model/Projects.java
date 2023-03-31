@@ -1,6 +1,5 @@
 package model;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
+
 
 public class Projects{
 
@@ -10,7 +9,7 @@ public class Projects{
     private Calendar expectedEndDate;
     private double budget;
     
-    public Projects(String projectName, String clientName, Calendar expectedStartDate, Calendar expectedEndDate, double budget){
+    public Projects(String projectName, String clientName, String expectedStartDate, String expectedEndDate, double budget){
         
         this.projectName = projectName;
         this.clientName = clientName;
@@ -18,4 +17,5 @@ public class Projects{
         this.expectedEndDate = expectedEndDate;
         this.budget = budget;
     }
+
 }

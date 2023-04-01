@@ -1,93 +1,263 @@
 package model;
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class ProjectManage{
 
     public static final int SIZE_ARRAY = 10;
-	public static final int SIZE_STAGES = 6;
     private Projects[] projects;
-	private Stages[] stages;
+	private int[] months;
 
     public ProjectManage(){
 
         projects = new Projects[SIZE_ARRAY];
-		stages = new Stages[SIZE_STAGES];
+		months = new int[SIZE_ARRAY];
     }
     
-    public void addProject(String projectName, String clientName, double budget){
+ /**
+  * This function adds a new project to the projects array.
+  * 
+  * @param projectName The name of the project.
+  * @param clientName The name of the client.
+  * @param expectedStartDate The date that the project is expected to start.
+  * @param expectedEndDate The date the project is expected to end.
+  * @param budget The budget of the project.
+  */
+    public void addProject(String projectName, String clientName, Calendar expectedStartDate, Calendar expectedEndDate, double budget){
 	
-		Projects project = new Projects(projectName, clientName, budget); 
+		Projects project = new Projects(projectName, clientName, expectedStartDate, expectedEndDate, budget); 
 		int pos = getFirstValidPosition();
 		if(pos != -1){
 		    projects[pos] = project; 
 		}
 	}
 
-	public void initStages(String expectedStartDate, String expectedEndDate){
+/**
+ * This function is used to initialize the stages of a project
+ * 
+ * @param expectedStartDate The date that the stage is expected to start.
+ * @param realStartDate The date the project was actually started.
+ */
+	public void initStages(String projectName, Calendar expectedStartDate, Calendar realStartDate) throws Exception{
 		
 		int pos;
-		String expectedStartDateEmpt = " ";
-		String expectedEndDateEmpt = " ";
-		String realStartDateEmpt = " ";
-		String realEndDateEmpt = " ";
+		String refillDateStr = "01/01/2001";
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		boolean isFound = false;
 
-		Stages startStage = new Stages(expectedStartDate, expectedEndDate, realStartDate, realEndDate);
+		Calendar expectedStartDateEmpt = Calendar.getInstance();
+		expectedStartDateEmpt.setTime(format.parse(refillDateStr));
+		Calendar realStartDateEmpt = Calendar.getInstance();
+		realStartDateEmpt.setTime(format.parse(refillDateStr));
 
-			boolean stageStatus = startStage.getStatus();
-			if(stageStatus == false){
-				stageStatus = true;
-				startStage.setStatus(stageStatus);
-			}
+		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
+			if(projects[i].getName().equals(projectName)){
 
-			pos = getFirstValidPosition();
-			if(pos != -1){
-			    stages[pos] = startStage; 
-			}
+				Stages startStage = new Stages(expectedStartDate, realStartDate);
+				boolean stageStatus = startStage.getStatus();
+				if(stageStatus == false){
+					stageStatus = true;
+					startStage.setStatus(stageStatus);
+				}
+				projects[i].addStage(startStage);
+
+				Stages analytStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+				projects[i].addStage(analytStage);
 	
-		Stages analytStage = new Stages(expectedStartDateEmpt, expectedEndDateEmpt, realStartDateEmpt, realEndDateEmpt);
-			pos = getFirstValidPosition();
-			if(pos != -1){
-		    	stages[pos] = analytStage; 
-			}
+				Stages designStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+				projects[i].addStage(designStage);
 	
-		Stages designStage = new Stages(expectedStartDateEmpt, expectedEndDateEmpt, realStartDateEmpt, realEndDateEmpt);
-			pos = getFirstValidPosition();
-			if(pos != -1){
-		    	stages[pos] = designStage; 
-			}
+				Stages executStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+				projects[i].addStage(executStage);
 	
-		Stages executStage = new Stages(expectedStartDateEmpt, expectedEndDateEmpt, realStartDateEmpt, realEndDateEmpt);
-			pos = getFirstValidPosition();
-			if(pos != -1){
-		    	stages[pos] = executStage; 
-			}
-	
-		Stages closeStage = new Stages(expectedStartDateEmpt, expectedEndDateEmpt, realStartDateEmpt, realEndDateEmpt);
-			pos = getFirstValidPosition();
-			if(pos != -1){
-		    	stages[pos] = closeStage; 
-			}
-		Stages followAndControlStage = new Stages(expectedStartDateEmpt, expectedEndDateEmpt, realStartDateEmpt, realEndDateEmpt);
-			pos = getFirstValidPosition();
-			if(pos != -1){
-		    	stages[pos] = followAndControlStage; 
-			}
+				Stages closeStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+				projects[i].addStage(closeStage);
 
-	}
+				Stages followAndControlStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+				projects[i].addStage(followAndControlStage);
 
-	public void finishStage(){
-
-		while(int i = 0; i < SIZE_STAGES && !stages[i].isActivated; i++){
-			if(i < SIZE_STAGES){
-				stages[i].isActivated = false;
-			}
-			if(i < SIZE_STAGES - 1){
-				stages[i+1].isActivated = true;
 			}
 		}
 	}
 
+/**
+ * This function adds a capsule to the current stage of a project
+ * 
+ * @param projectName The name of the project
+ * @param capsuleId The id of the capsule
+ * @param capsuleType 
+ * @param capsuleDescription A description of the capsule.
+ * @param capsuleWorkerName The name of the worker who is assigned to the capsule.
+ * @param capsuleWorkerCharge The charge of the worker in the capsule
+ * @param capsuleLection The lection of the capsule.
+ */
+	public void addCapsule(String projectName, String capsuleId, String capsuleType, String capsuleDescription, String capsuleWorkerName, String capsuleWorkerCharge, String capsuleLection){
+		
+		boolean isFoundProject = false;
+		boolean isFoundStage = false;
+		boolean activatedStatus = false;
+ 
+		Capsule capsule = new Capsule(capsuleId, capsuleType, capsuleDescription, capsuleWorkerName, capsuleWorkerCharge, capsuleLection);
+		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			if(projects[i].getName().equals(projectName)){
+				Stages[] stages = projects[i].getStages();
+				isFoundProject = true;
+				for(int o = 0; i < stages.length && !isFoundStage; i++){
+					if(stages[o].getStatus() == true){
+						activatedStatus = stages[o].getStatus();
+						stages[o].addCapsule(activatedStatus, capsule);
+						isFoundStage = true;
+					}
+				}
+			}
+		}
+	}
 
+/**
+ * The function receives a project name, a capsule id, a publish date and a new status. It checks if
+ * the project exists, if it does, it checks if the stage is active, if it is, it checks if the capsule
+ * exists, if it does, it checks if the new status is true, if it is, it changes the status of the
+ * capsule to true and sets the publish date to the one received as a parameter. If the new status is
+ * false, it returns a message saying that the status hasn't changed
+ * 
+ * @param projectName The name of the project
+ * @param capsuleId The id of the capsule to be approved.
+ * @param publishDate Calendar
+ * @param newStatus boolean
+ * @return The method is returning a String.
+ */
+	public String approveCapsule(String projectName, String capsuleId, Calendar publishDate, boolean newStatus){
+
+		boolean isFoundProject = false;
+		boolean isFoundStage = false;
+		boolean isFoundCapsule = false;
+		String msg = " ";
+
+		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			if(projects[i].getName().equals(projectName)){
+				Stages[] stages = projects[i].getStages();
+				isFoundProject = true;
+				for(int o = 0; i < stages.length && !isFoundStage; i++){
+					if(stages[o].getStatus() == true){
+						Capsule[] capsules = stages[o].getCapsules();
+						isFoundStage = false;
+						for(int u = 0; i < capsules.length && !isFoundCapsule; i++){
+							if(capsules[u].getId().equals(capsuleId)){
+								if(newStatus == true){
+									capsules[i].setApproveStatus(newStatus);
+									capsules[i].setPublishDate(publishDate);
+									msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + publishDate;
+									isFoundCapsule = true;
+            	 				}
+        						else{
+            						msg = "The status hasnt changed, the capsule still innapproved.";
+        						}     									
+
+								}
+							}
+						}
+					}
+				}
+			}			
+				return msg;
+		}
+
+/**
+ * This function is used to publish a capsule that is approved and not published yet
+ * 
+ * @param projectName The name of the project that the capsule is in.
+ * @param capsuleId The id of the capsule to be published.
+ * @param newPublishedStatus true or false
+ * @return A string.
+ */
+	public String publishCapsule(String projectName, String capsuleId, boolean newPublishedStatus){
+
+		boolean isFoundProject = false;
+		boolean isFoundStage = false;
+		boolean isFoundCapsule = false;
+		String msg = " ";
+
+		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			if(projects[i].getName().equals(projectName)){
+				Stages[] stages = projects[i].getStages();
+				isFoundProject = true;
+				for(int o = 0; i < stages.length && isFoundStage; i++){
+					if(stages[o].getStatus() == true){
+						Capsule[] capsules = stages[o].getCapsules();
+						isFoundStage = false;
+						for(int u = 0; i < capsules.length && !isFoundCapsule; i++){
+							if(capsules[u].getId().equals(capsuleId)){
+								if(capsules[u].getApproveStatus() == true){
+									if(capsules[u].getIsPublished() == false){
+										capsules[u].setIsPublished(newPublishedStatus);
+										isFoundCapsule = true;
+										msg =  "https/GreenCapsule" + capsuleId + ".net";
+									}
+									else{
+										msg = "The capsule is already published.";
+									}
+            	 				}
+        						else{
+            						msg = "Cannot publish a capsule that is not approved.";
+        						}     									
+
+							}
+							else{
+								msg = "Couldnt find the capsule.";
+							}
+							}
+					}
+					
+					}
+			}
+			else{
+				msg = "Couldn find the project.";
+			}
+		}			
+				return msg;
+	}		
+		
+         
+    
+
+
+/**
+ * If the current stage is not the last stage, then deactivate the current stage and activate the next
+ * stage
+ */
+	public void finishStage(String projectName, Calendar endDate, int amountMonths){
+
+		boolean isFoundProject = false;
+
+		for(int o = 0; o < SIZE_ARRAY && !isFoundProject; o++){
+			if(projects[o].getName().equals(projectName)){
+				Stages[] stages = projects[o].getStages();
+				isFoundProject = true;
+				for(int i = 0; i < stages.length && !stages[i].isActivated; i++){
+					if(i < stages.length){
+						stages[i].isActivated = false;
+					}
+					if(i < stages.length - 1){
+						stages[i+1].isActivated = true;
+						Calendar newStartDate = stages[i].getRealEndDate();
+						stages[i+1].setExpectedStartDate(newStartDate);
+						stages[i+1].setRealStartDate(newStartDate);
+					}
+				}
+			}
+		}
+
+
+	}
+
+
+
+	
+/**
+ * > This function returns the first valid position in the array.
+ * 
+ * @return The first valid position in the array.
+ */
 	public int getFirstValidPosition(){
 		int pos = -1; 
 		boolean isFound = false; 
@@ -99,4 +269,6 @@ public class ProjectManage{
 		}
 		return pos; 
 	}
+
+
 }

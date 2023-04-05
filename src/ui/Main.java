@@ -16,6 +16,10 @@ public class Main{
 
     } 
 
+/**
+ * The main function runs a loop that displays a menu, validates user input, and executes the selected
+ * choice until the user chooses to exit.
+ */
     public static void main(String[] args) throws Exception{
 
         Main view = new Main();
@@ -33,6 +37,10 @@ public class Main{
         }while(choice != 6);
     }
 
+/**
+ * The function displays a menu with options for creating a project, finishing a project stage,
+ * registering a capsule, approving a capsule, publishing a capsule, or exiting the program.
+ */
     public void menu(){
 
         System.out.println("--------------------------------------------");
@@ -51,6 +59,12 @@ public class Main{
 
     }
 
+/**
+ * This function executes different actions based on the user's choice.
+ * 
+ * @param choice an integer representing the user's choice from a menu of options. The method executes
+ * different actions based on the value of this parameter.
+ */
     public void executeChoice(int choice) throws Exception{
         
         switch(choice){
@@ -99,6 +113,12 @@ public class Main{
         }
     }
 
+/**
+ * This function validates user input to ensure it is an integer value.
+ * 
+ * @return The method is returning an integer value, which is either the user input if it is a valid
+ * integer, or -1 if the user input is not a valid integer.
+ */
     public int validateIntegerInput(){
         int option = 0; 
         if(reader.hasNextInt()){
@@ -107,11 +127,15 @@ public class Main{
         else{
             reader.nextLine();
             option = -1; 
-            System.out.println("Ingrese un valor entero."); 
+            System.out.println("Enter a valid value."); 
         }
         return option; 
     }
 
+/**
+ * This function registers a capsule by taking input from the user and passing it to a project
+ * controller.
+ */
     public void registCapsule(){
 
         String id = ""; 
@@ -145,6 +169,10 @@ public class Main{
 
     }
     
+/**
+ * This function registers a new project by taking input from the user for project name, client name,
+ * expected start and end dates, and budget, and then adds the project to the project controller.
+ */
     public void registProject() throws Exception{
         
         String projectName = "";
@@ -172,6 +200,10 @@ public class Main{
 
     }
 
+/**
+ * This function registers stages for a project by taking input from the user for project name,
+ * expected start date, and real start date.
+ */
     public void registStages() throws Exception{
 
         String projectName = " ";
@@ -193,6 +225,10 @@ public class Main{
         System.out.println("The project has been registed succesfully.");
     }
 
+/**
+ * This function finishes the current stage of a project and initiates the next stage by taking input
+ * from the user for project name, end date, and estimated amount of months for the next stage.
+ */
     public void finishStage() throws Exception{
 
         String endDateStr = " ";
@@ -213,6 +249,10 @@ public class Main{
 
     }
 
+/**
+ * This function prompts the user to input information about a capsule to approve and then calls a
+ * method to approve the capsule in a project.
+ */
     public void approveCapsule() throws Exception{
 
         boolean newStatus = true;
@@ -234,6 +274,10 @@ public class Main{
 
     }
 
+/**
+ * This function prompts the user to input a project name and capsule ID, then calls a project
+ * controller to publish the capsule and returns a URL.
+ */
     public void publishCapsule(){
 
         boolean publishStatus = true;
@@ -251,6 +295,12 @@ public class Main{
         System.out.println(url);
     }
 
+/**
+ * The function converts a string date in the format "dd/MM/yyyy" to a Calendar object.
+ * 
+ * @param date The date parameter is a string representing a date in the format "dd/MM/yyyy".
+ * @return A Calendar object is being returned.
+ */
     public Calendar stringsToCalendar(String date) throws Exception{
         
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

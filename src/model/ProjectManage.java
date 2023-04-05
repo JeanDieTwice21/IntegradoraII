@@ -32,11 +32,14 @@ public class ProjectManage{
 		}
 	}
 
+
 /**
- * This function is used to initialize the stages of a project
+ * This function initializes stages for a project with given start dates and adds them to the project's
+ * list of stages.
  * 
- * @param expectedStartDate The date that the stage is expected to start.
- * @param realStartDate The date the project was actually started.
+ * @param projectName a String representing the name of the project
+ * @param expectedStartDate The expected start date for the first stage of the project.
+ * @param realStartDate The actual start date of a project stage.
  */
 	public void initStages(String projectName, Calendar expectedStartDate, Calendar realStartDate) throws Exception{
 		
@@ -126,8 +129,8 @@ public class ProjectManage{
  * 
  * @param projectName The name of the project
  * @param capsuleId The id of the capsule to be approved.
- * @param publishDate Calendar
- * @param newStatus boolean
+ * @param publishDate The date the capsule wash published.
+ * @param newStatus The new approved status of the capsule.
  * @return The method is returning a String.
  */
 	public String approveCapsule(String projectName, String capsuleId, Calendar publishDate, boolean newStatus){

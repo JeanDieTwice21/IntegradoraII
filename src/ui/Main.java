@@ -60,6 +60,7 @@ public class Main{
                 System.out.println("You choosed to create a project.");
                 System.out.println(" ");
                 registProject();
+                registStages();
 
                 break;
 
@@ -169,6 +170,16 @@ public class Main{
 
         projectController.addProject(projectName, clientName, expectedStartDate, expectedEndDate, budget);
 
+    }
+
+    public void registStages() throws Exception{
+
+        String projectName = " ";
+        String expectedStartDateStageStr = " ";
+        String realStartStageDateStr = " ";
+
+        System.out.println("Confirm the name of the project: ");
+        projectName = reader.next();
         System.out.println("Now, please, type the expected start date for the first stage: ");
         expectedStartDateStageStr = reader.next();
         Calendar expectedStartDateStage = stringsToCalendar(expectedStartDateStageStr);
@@ -180,7 +191,6 @@ public class Main{
         projectController.initStages(projectName, expectedStartDateStage, realStartDate);
 
         System.out.println("The project has been registed succesfully.");
-
     }
 
     public void finishStage() throws Exception{

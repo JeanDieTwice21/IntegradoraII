@@ -51,7 +51,9 @@ public class ProjectManage{
 		realStartDateEmpt.setTime(format.parse(refillDateStr));
 
 		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
-			if(projects[i].getName().equals(projectName)){
+			if(projects[i] != null){
+				
+				if(projects[i].getName().equals(projectName)){
 
 				Stages startStage = new Stages(expectedStartDate, realStartDate);
 				boolean stageStatus = startStage.getStatus();
@@ -77,6 +79,8 @@ public class ProjectManage{
 				projects[i].addStage(followAndControlStage);
 
 			}
+			}
+
 		}
 	}
 

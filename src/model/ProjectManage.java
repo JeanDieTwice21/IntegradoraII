@@ -105,14 +105,16 @@ public class ProjectManage{
  
 		Capsule capsule = new Capsule(capsuleId, capsuleType, capsuleDescription, capsuleWorkerName, capsuleWorkerCharge, capsuleLection);
 		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
-			if(projects[i].getName().equals(projectName)){
-				Stages[] stages = projects[i].getStages();
-				isFoundProject = true;
-				for(int o = 0; i < stages.length && !isFoundStage; o++){
-					if(stages[o].getStatus() == true){
-						activatedStatus = stages[o].getStatus();
-						stages[o].addCapsule(activatedStatus, capsule);
-						isFoundStage = true;
+			if(projects[i] != null){
+				if(projects[i].getName().equals(projectName)){
+					Stages[] stages = projects[i].getStages();
+					isFoundProject = true;
+					for(int o = 0; i < stages.length && !isFoundStage; o++){
+						if(stages[o].getStatus() == true){
+							activatedStatus = stages[o].getStatus();
+							stages[o].addCapsule(activatedStatus, capsule);
+							isFoundStage = true;
+						}
 					}
 				}
 			}
@@ -140,30 +142,35 @@ public class ProjectManage{
 		String msg = " ";
 
 		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
-			if(projects[i].getName().equals(projectName)){
-				Stages[] stages = projects[i].getStages();
-				isFoundProject = true;
-				for(int o = 0; i < stages.length && !isFoundStage; o++){
-					if(stages[o].getStatus() == true){
-						Capsule[] capsules = stages[o].getCapsules();
-						isFoundStage = true;
-						for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
-							if(capsules[u].getId().equals(capsuleId)){
-								if(newStatus == true){
-									capsules[i].setApproveStatus(newStatus);
-									capsules[i].setApproveDate(approveDate);
-									msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + approveDate;
-									isFoundCapsule = true;
-            	 				}
-        						else{
-            						msg = "The status hasnt changed, the capsule still innapproved.";
-        						}     									
-
+			if(projects[i] != null){
+				if(projects[i].getName().equals(projectName)){
+					Stages[] stages = projects[i].getStages();
+					isFoundProject = true;
+					for(int o = 0; i < stages.length && !isFoundStage; o++){
+						if(stages[o].getStatus() == true){
+							Capsule[] capsules = stages[o].getCapsules();
+							isFoundStage = true;
+							for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
+								if(capsules[u].getId().equals(capsuleId)){
+									if(newStatus == true){
+										capsules[i].setApproveStatus(newStatus);
+										capsules[i].setApproveDate(approveDate);
+										msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + approveDate;
+										isFoundCapsule = true;
+									 }
+									else{
+										msg = "The status hasnt changed, the capsule still innapproved.";
+									}     									
+	
+									}
 								}
 							}
 						}
 					}
-				}
+			}
+			else{
+				msg = "There isnt any project registered.";
+			}
 			}			
 				return msg;
 		}
@@ -184,42 +191,47 @@ public class ProjectManage{
 		String msg = " ";
 
 		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
-			
-			if(projects[i].getName().equals(projectName)){
-				Stages[] stages = projects[i].getStages();
-				isFoundProject = true;
-				for(int o = 0; i < stages.length && isFoundStage; o++){
-					if(stages[o].getStatus() == true){
-						Capsule[] capsules = stages[o].getCapsules();
-						isFoundStage = true;
-						for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
-							if(capsules[u].getId().equals(capsuleId)){
-								if(capsules[u].getApproveStatus() == true){
-									if(capsules[u].getIsPublished() == false){
-										capsules[u].setIsPublished(newPublishedStatus);
-										isFoundCapsule = true;
-										msg =  "https/GreenCapsule" + capsuleId + ".net";
-									}
+			if(projects[i] != null){
+				if(projects[i].getName().equals(projectName)){
+					Stages[] stages = projects[i].getStages();
+					isFoundProject = true;
+					for(int o = 0; i < stages.length && isFoundStage; o++){
+						if(stages[o].getStatus() == true){
+							Capsule[] capsules = stages[o].getCapsules();
+							isFoundStage = true;
+							for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
+								if(capsules[u].getId().equals(capsuleId)){
+									if(capsules[u].getApproveStatus() == true){
+										if(capsules[u].getIsPublished() == false){
+											capsules[u].setIsPublished(newPublishedStatus);
+											isFoundCapsule = true;
+											msg =  "https/GreenCapsule" + capsuleId + ".net";
+										}
+										else{
+											msg = "The capsule is already published.";
+										}
+									 }
 									else{
-										msg = "The capsule is already published.";
-									}
-            	 				}
-        						else{
-            						msg = "Cannot publish a capsule that is not approved.";
-        						}     									
-
-							}
-							else{
-								msg = "Couldnt find the capsule.";
-							}
-							}
-					}
-					
-					}
+										msg = "Cannot publish a capsule that is not approved.";
+									}     									
+	
+								}
+								else{
+									msg = "Couldnt find the capsule.";
+								}
+								}
+						}
+						
+						}
+				}
+				else{
+					msg = "Couldn find the project.";
+				}
 			}
 			else{
-				msg = "Couldn find the project.";
+				msg = "There isnt any project registered.";
 			}
+			
 		}			
 				return msg;
 	}		
@@ -237,21 +249,24 @@ public class ProjectManage{
 		boolean isFoundProject = false;
 
 		for(int o = 0; o < SIZE_ARRAY && !isFoundProject; o++){
-			if(projects[o].getName().equals(projectName)){
-				Stages[] stages = projects[o].getStages();
-				isFoundProject = true;
-				for(int i = 0; i < stages.length && !stages[i].isActivated; i++){
-					if(i < stages.length){
-						stages[i].isActivated = false;
-					}
-					if(i < stages.length - 1){
-						stages[i+1].isActivated = true;
-						Calendar newStartDate = stages[i].getRealEndDate();
-						stages[i+1].setExpectedStartDate(newStartDate);
-						stages[i+1].setRealStartDate(newStartDate);
+			if(projects[o] != null){
+				if(projects[o].getName().equals(projectName)){
+					Stages[] stages = projects[o].getStages();
+					isFoundProject = true;
+					for(int i = 0; i < stages.length && !stages[i].isActivated; i++){
+						if(i < stages.length){
+							stages[i].isActivated = false;
+						}
+						if(i < stages.length - 1){
+							stages[i+1].isActivated = true;
+							Calendar newStartDate = stages[i].getRealEndDate();
+							stages[i+1].setExpectedStartDate(newStartDate);
+							stages[i+1].setRealStartDate(newStartDate);
+						}
 					}
 				}
 			}
+
 		}
 
 

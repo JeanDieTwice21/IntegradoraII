@@ -257,7 +257,7 @@ public class Main{
 
         boolean newStatus = true;
         String capsuleId = " ";
-        String publishDateStr = " ";
+        String approveDateStr = " ";
         String projectName = " ";
 
         System.out.println("Type the name of the project: ");
@@ -265,10 +265,10 @@ public class Main{
         System.out.println("Please, type the id of the capsule to approve:  ");
         capsuleId = reader.next();
         System.out.println("Please, type today's date: ");
-        publishDateStr = reader.next();
-        Calendar publishDate = stringsToCalendar(publishDateStr);
+        approveDateStr = reader.next();
+        Calendar approveDate = stringsToCalendar(approveDateStr);
 
-        String msgConfirm = projectController.approveCapsule(projectName, capsuleId, publishDate, newStatus);
+        String msgConfirm = projectController.approveCapsule(projectName, capsuleId, approveDate, newStatus);
 
         System.out.println(msgConfirm);
 

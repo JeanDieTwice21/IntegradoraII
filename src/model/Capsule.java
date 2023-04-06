@@ -12,7 +12,7 @@ public class Capsule{
     private String lection;
     private boolean approveStatus;
     private boolean isPublished;
-    private Calendar publishDate;
+    private Calendar approveDate;
 
     public Capsule(String id, String type, String description, String workerName, String workerCharge, String lection){
 
@@ -61,8 +61,8 @@ public class Capsule{
  * @return The method `getPublishDate()` is returning a `Calendar` object, which represents the date
  * and time of publication.
  */
-    public Calendar getPubilishDate(){
-        return publishDate;
+    public Calendar getApproveDate(){
+        return approveDate;
     }
 /**
  * This function sets the published status of an object.
@@ -92,8 +92,8 @@ public class Capsule{
  * @param newPublishDate A Calendar object representing the new publish date to be set for an instance
  * variable called publishDate.
  */
-    public void setPublishDate(Calendar newPublishDate){
-        this.publishDate = newPublishDate;
+    public void setApproveDate(Calendar approvedDate){
+        this.approveDate = approvedDate;
     }
 
 }

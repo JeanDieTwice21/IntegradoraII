@@ -6,12 +6,10 @@ public class ProjectManage{
 
     public static final int SIZE_ARRAY = 10;
     private Projects[] projects;
-	private int[] months;
 
     public ProjectManage(){
 
         projects = new Projects[SIZE_ARRAY];
-		months = new int[SIZE_ARRAY];
     }
     
  /**
@@ -43,7 +41,6 @@ public class ProjectManage{
  */
 	public void initStages(String projectName, Calendar expectedStartDate, Calendar realStartDate) throws Exception{
 		
-		int pos;
 		String refillDateStr = "01/01/2001";
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		boolean isFound = false;
@@ -54,32 +51,34 @@ public class ProjectManage{
 		realStartDateEmpt.setTime(format.parse(refillDateStr));
 
 		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
+
 			if(projects[i] != null){
-				
 				if(projects[i].getName().equals(projectName)){
 
-				Stages startStage = new Stages(expectedStartDate, realStartDate);
-				boolean stageStatus = startStage.getStatus();
-				if(stageStatus == false){
-					stageStatus = true;
-					startStage.setStatus(stageStatus);
-				}
-				projects[i].addStage(startStage);
+					Stages startStage = new Stages(expectedStartDate, realStartDate);
+					boolean stageStatus = startStage.getStatus();
+					if(stageStatus == false){
+						stageStatus = true;
+						startStage.setStatus(stageStatus);
+					}
+					projects[i].addStage(startStage);
 
-				Stages analytStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
-				projects[i].addStage(analytStage);
+					Stages analytStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					projects[i].addStage(analytStage);
 	
-				Stages designStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
-				projects[i].addStage(designStage);
+					Stages designStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					projects[i].addStage(designStage);
 	
-				Stages executStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
-				projects[i].addStage(executStage);
+					Stages executStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					projects[i].addStage(executStage);
 	
-				Stages closeStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
-				projects[i].addStage(closeStage);
+					Stages closeStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					projects[i].addStage(closeStage);
 
-				Stages followAndControlStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
-				projects[i].addStage(followAndControlStage);
+					Stages followAndControlStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					projects[i].addStage(followAndControlStage);
+
+					isFound = false;
 
 			}
 			}
@@ -109,7 +108,7 @@ public class ProjectManage{
 			if(projects[i].getName().equals(projectName)){
 				Stages[] stages = projects[i].getStages();
 				isFoundProject = true;
-				for(int o = 0; i < stages.length && !isFoundStage; i++){
+				for(int o = 0; i < stages.length && !isFoundStage; o++){
 					if(stages[o].getStatus() == true){
 						activatedStatus = stages[o].getStatus();
 						stages[o].addCapsule(activatedStatus, capsule);
@@ -133,7 +132,7 @@ public class ProjectManage{
  * @param newStatus The new approved status of the capsule.
  * @return The method is returning a String.
  */
-	public String approveCapsule(String projectName, String capsuleId, Calendar publishDate, boolean newStatus){
+	public String approveCapsule(String projectName, String capsuleId, Calendar approveDate, boolean newStatus){
 
 		boolean isFoundProject = false;
 		boolean isFoundStage = false;
@@ -144,16 +143,16 @@ public class ProjectManage{
 			if(projects[i].getName().equals(projectName)){
 				Stages[] stages = projects[i].getStages();
 				isFoundProject = true;
-				for(int o = 0; i < stages.length && !isFoundStage; i++){
+				for(int o = 0; i < stages.length && !isFoundStage; o++){
 					if(stages[o].getStatus() == true){
 						Capsule[] capsules = stages[o].getCapsules();
-						isFoundStage = false;
-						for(int u = 0; i < capsules.length && !isFoundCapsule; i++){
+						isFoundStage = true;
+						for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
 							if(capsules[u].getId().equals(capsuleId)){
 								if(newStatus == true){
 									capsules[i].setApproveStatus(newStatus);
-									capsules[i].setPublishDate(publishDate);
-									msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + publishDate;
+									capsules[i].setApproveDate(approveDate);
+									msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + approveDate;
 									isFoundCapsule = true;
             	 				}
         						else{
@@ -185,14 +184,15 @@ public class ProjectManage{
 		String msg = " ";
 
 		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			
 			if(projects[i].getName().equals(projectName)){
 				Stages[] stages = projects[i].getStages();
 				isFoundProject = true;
-				for(int o = 0; i < stages.length && isFoundStage; i++){
+				for(int o = 0; i < stages.length && isFoundStage; o++){
 					if(stages[o].getStatus() == true){
 						Capsule[] capsules = stages[o].getCapsules();
-						isFoundStage = false;
-						for(int u = 0; i < capsules.length && !isFoundCapsule; i++){
+						isFoundStage = true;
+						for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
 							if(capsules[u].getId().equals(capsuleId)){
 								if(capsules[u].getApproveStatus() == true){
 									if(capsules[u].getIsPublished() == false){

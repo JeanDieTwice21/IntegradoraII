@@ -6,6 +6,10 @@ public class ProjectManage{
 
     public static final int SIZE_ARRAY = 10;
     private Projects[] projects;
+	private int technicalCounter = 0;
+    private int managementCounter = 0;
+    private int domainCounter = 0;
+	private int experiencesCounter = 0;
 
     public ProjectManage(){
 
@@ -97,12 +101,35 @@ public class ProjectManage{
  * @param capsuleWorkerCharge The charge of the worker in the capsule
  * @param capsuleLection The lection of the capsule.
  */
-	public void addCapsule(String projectName, String capsuleId, String capsuleType, String capsuleDescription, String capsuleWorkerName, String capsuleWorkerCharge, String capsuleLection){
+	public String addCapsule(String projectName, int type, String capsuleId, String capsuleDescription, String capsuleWorkerName, String capsuleWorkerCharge, String capsuleLection){
 		
+		Type capsuleType = null;
+		String msg = "The capsule hasnt been registed";
 		boolean isFoundProject = false;
 		boolean isFoundStage = false;
 		boolean activatedStatus = false;
- 
+		
+		if(type ==  1){
+
+			capsuleType = Type.TECHNICAL;
+			technicalCounter += 1;
+		}
+		else if(type == 2){
+
+			capsuleType = Type.MANAGE;
+			managementCounter += 1;
+		}
+		else if(type == 3){
+
+			capsuleType = Type.DOMAIN;
+			domainCounter += 1;
+		}
+		else if(type == 4){
+
+			capsuleType = Type.EXPERIENCES;
+			experiencesCounter += 1;
+		}
+
 		Capsule capsule = new Capsule(capsuleId, capsuleType, capsuleDescription, capsuleWorkerName, capsuleWorkerCharge, capsuleLection);
 		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
 			if(projects[i] != null){
@@ -114,11 +141,19 @@ public class ProjectManage{
 							activatedStatus = stages[o].getStatus();
 							stages[o].addCapsule(activatedStatus, capsule);
 							isFoundStage = true;
+							msg = "The capsule has been registed succesfully";
 						}
 					}
 				}
+				else{
+					msg = "The project wastn found";
+				}
+			}
+			else{
+				msg = "Theres isnt any registed projects.";
 			}
 		}
+		return msg;
 	}
 
 /**
@@ -143,18 +178,18 @@ public class ProjectManage{
 
 		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
 			if(projects[i] != null){
-				if(projects[i].getName().equals(projectName)){
+				if(projects[i].getName().equalsIgnoreCase(projectName)){
 					Stages[] stages = projects[i].getStages();
 					isFoundProject = true;
-					for(int o = 0; i < stages.length && !isFoundStage; o++){
+					for(int o = 0; o < stages.length && !isFoundStage; o++){
 						if(stages[o].getStatus() == true){
 							Capsule[] capsules = stages[o].getCapsules();
 							isFoundStage = true;
-							for(int u = 0; i < capsules.length && !isFoundCapsule; u++){
+							for(int u = 0; u < capsules.length && !isFoundCapsule; u++){
 								if(capsules[u].getId().equals(capsuleId)){
 									if(newStatus == true){
-										capsules[i].setApproveStatus(newStatus);
-										capsules[i].setApproveDate(approveDate);
+										capsules[u].setApproveStatus(newStatus);
+										capsules[u].setApproveDate(approveDate);
 										msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + approveDate;
 										isFoundCapsule = true;
 									 }
@@ -163,9 +198,18 @@ public class ProjectManage{
 									}     									
 	
 									}
+									else{
+
+										msg = "The capsule wasnt found";
+
+									}
 								}
 							}
+
 						}
+					}
+					else{
+						msg = "The project wanst found";
 					}
 			}
 			else{
@@ -195,7 +239,7 @@ public class ProjectManage{
 				if(projects[i].getName().equals(projectName)){
 					Stages[] stages = projects[i].getStages();
 					isFoundProject = true;
-					for(int o = 0; i < stages.length && isFoundStage; o++){
+					for(int o = 0; o < stages.length && isFoundStage; o++){
 						if(stages[o].getStatus() == true){
 							Capsule[] capsules = stages[o].getCapsules();
 							isFoundStage = true;
@@ -270,6 +314,14 @@ public class ProjectManage{
 		}
 
 
+	}
+
+	public String showCapsulesByType(){
+
+		String msg = "The amount of technical capsules is : " + technicalCounter + "\n" + "The amount of management capsules is: " + managementCounter + "\n" + "The amount of domain capsules is: " + domainCounter + "\n" + "The amount of experiences capsules is: " + experiencesCounter;
+
+		return msg;
+	
 	}
 
 

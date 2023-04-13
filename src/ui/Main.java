@@ -54,6 +54,7 @@ public class Main{
         System.out.println("4. Approve a capsule.");
         System.out.println("5. Public a capsule.");
         System.out.println("6. Exit.");
+        System.out.println("7. Get informed about the amount of capsules by type.");
         System.out.println(" ");
         System.out.println("--------------------------------------------");
 
@@ -110,6 +111,11 @@ public class Main{
 
                 System.out.println("Goodbye.");
                 break;
+            
+            case 7:
+
+                showCapsulesByType();
+                break;
         }
     }
 
@@ -143,7 +149,7 @@ public class Main{
         String workerName = "";
         String workerCharge = "";
         String lection = "";
-        String type = "";
+        int type = 0;
         String projectName = " ";
          
         System.out.println("Type the name of the project.");
@@ -153,8 +159,12 @@ public class Main{
         System.out.println("Type a short description: ");
         reader.next(); 
         description = reader.nextLine();
-        System.out.println("Type the kind of the capsule: ");
-        type = reader.next();
+        System.out.println("Enter the option of the type of capsule to regist : ");
+        System.out.println("1. Technical capsule.");
+        System.out.println("2. Management capsule.");
+        System.out.println("3. Domain capsule.");
+        System.out.println("4. Experiences capsule.");
+        type = reader.nextInt();
         System.out.println("Type the worker name: ");
         workerName = reader.next();
         System.out.println("Type the worker charge: ");
@@ -163,9 +173,10 @@ public class Main{
         reader.next();
         lection = reader.nextLine(); 
 
-        projectController.addCapsule(projectName, id, type, description, workerName, workerCharge, lection); 
+        String confirmMessage = projectController.addCapsule(projectName, type, id, description, workerName, workerCharge, lection); 
 
-        System.out.println("The capsule has been registed.");
+
+        System.out.println(confirmMessage);
 
     }
     
@@ -293,6 +304,13 @@ public class Main{
         String url = projectController.publishCapsule(projectName, capsuleId, publishStatus);
 
         System.out.println(url);
+    }
+
+    public void showCapsulesByType(){
+        
+        String inform = projectController.showCapsulesByType();
+
+        System.out.println(inform);
     }
 
 /**

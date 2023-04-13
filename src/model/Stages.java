@@ -14,6 +14,7 @@ public class Stages{
     public boolean isActivated;
     private Capsule[] capsules;
 
+
     public Stages(Calendar expectedStartDate, Calendar realStartDate){
         
         this.expectedStartDate = expectedStartDate; 
@@ -155,6 +156,8 @@ public class Stages{
         this.isActivated = status;
 
     }
+
+
 
 /**
  * This function returns the index of the first null element in an array of capsules.

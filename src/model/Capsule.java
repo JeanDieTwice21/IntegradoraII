@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 public class Capsule{
 
     private String id;
-    private String type;
+    private Type type;
     private String description;
     private String workerName;
     private String workerCharge;
@@ -13,8 +13,9 @@ public class Capsule{
     private boolean approveStatus;
     private boolean isPublished;
     private Calendar approveDate;
+    
 
-    public Capsule(String id, String type, String description, String workerName, String workerCharge, String lection){
+    public Capsule(String id, Type type, String description, String workerName, String workerCharge, String lection){
 
         this.id = id;
         this.type = type;

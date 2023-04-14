@@ -55,6 +55,7 @@ public class Main{
         System.out.println("5. Public a capsule.");
         System.out.println("6. Exit.");
         System.out.println("7. Get informed about the amount of capsules by type.");
+        System.out.println("8. Get informed about the lections learned in an especific stage.");
         System.out.println(" ");
         System.out.println("--------------------------------------------");
 
@@ -115,6 +116,11 @@ public class Main{
             case 7:
 
                 showCapsulesByType();
+                break;
+            
+            case 8:
+
+                showCapsulesLection();
                 break;
         }
     }
@@ -311,6 +317,26 @@ public class Main{
         String inform = projectController.showCapsulesByType();
 
         System.out.println(inform);
+    }
+
+    public void showCapsulesLection(){
+        
+        String projectName = " ";
+        int stage = 0;
+
+        System.out.println("Enter the name of the project: ");
+        projectName = reader.next();
+        System.out.println("Choose the stage of the project: ");
+        System.out.println("0. Start stage.");
+        System.out.println("1. Analyt stage.");
+        System.out.println("2. Design stage.");
+        System.out.println("3. Execut stage. ");
+        System.out.println("4. Close stage.");
+        System.out.println("5. Follow and control stage.");
+        stage = reader.nextInt();
+
+        String inform = projectController.showCapsulesLections(projectName, stage);
+        System.out.println("The lections are: " + inform);
     }
 
 /**

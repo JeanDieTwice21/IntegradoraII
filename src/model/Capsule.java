@@ -65,6 +65,10 @@ public class Capsule{
     public Calendar getApproveDate(){
         return approveDate;
     }
+
+    public String getLection(){
+        return lection;
+    }
 /**
  * This function sets the published status of an object.
  * 

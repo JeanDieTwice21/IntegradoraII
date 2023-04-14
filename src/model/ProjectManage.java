@@ -82,7 +82,7 @@ public class ProjectManage{
 					Stages followAndControlStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
 					projects[i].addStage(followAndControlStage);
 
-					isFound = false;
+					isFound = true;
 
 			}
 			}
@@ -322,6 +322,38 @@ public class ProjectManage{
 
 		return msg;
 	
+	}
+
+	public String showCapsulesLections(String projectName, int stagesPos){
+
+		String msg = " ";
+		boolean isFoundProject = false;
+		
+		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			if(projects[i] != null){
+				if(projects[i].getName().equals(projectName)){
+					Stages[] stages= projects[i].getStages();
+					isFoundProject = true;
+					for(int j = 0; j < stages.length; j++){
+						Capsule[] capsules = stages[j].getCapsules();
+						for(int z = 0; z < capsules.length; z++){
+							msg += capsules[z].getLection() + "\n";
+						}
+					}
+				
+				}
+				else{
+					msg = "couldnt find the project";
+				}
+			}
+			else{
+				msg = "There isnt any project registed";
+			}
+		}
+		
+		
+
+		return msg;
 	}
 
 

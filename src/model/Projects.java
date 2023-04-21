@@ -23,6 +23,17 @@ public class Projects{
         stages = new Stages[SIZE_STAGES];
     }
 
+    public int searchAmountCapsules(){
+
+        int capsulesCounter = 0;
+
+        for(int i = 0; i < SIZE_STAGES; i++){
+            capsulesCounter = stages[i].countCapsules();
+        }
+
+        return capsulesCounter;
+    }
+
 /**
  * The function adds a stage to an array of stages at the first available position.
  * 

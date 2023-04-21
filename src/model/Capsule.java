@@ -28,6 +28,11 @@ public class Capsule{
 
     }
 
+
+    public String getWorker(){
+        return workerName;
+    }
+
 /**
  * This function returns the value of the "id" variable as a string.
  * 
@@ -69,6 +74,7 @@ public class Capsule{
     public String getLection(){
         return lection;
     }
+    
 /**
  * This function sets the published status of an object.
  * 

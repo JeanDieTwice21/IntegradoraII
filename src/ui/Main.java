@@ -34,7 +34,7 @@ public class Main{
 
 
 
-        }while(choice != 6);
+        }while(choice != 11);
     }
 
 /**
@@ -44,7 +44,7 @@ public class Main{
     public void menu(){
 
         System.out.println("--------------------------------------------");
-        System.out.println("Hello there!");
+        System.out.println("GreenSQA Knowledge management.");
         System.out.println(" ");
         System.out.println("Please, choose an option: ");
         System.out.println(" ");
@@ -53,9 +53,12 @@ public class Main{
         System.out.println("3. Regist a capsule.");
         System.out.println("4. Approve a capsule.");
         System.out.println("5. Public a capsule.");
-        System.out.println("6. Exit.");
-        System.out.println("7. Get informed about the amount of capsules by type.");
-        System.out.println("8. Get informed about the lections learned in an especific stage.");
+        System.out.println("6. Get informed about the amount of capsules by type.");
+        System.out.println("7. Get informed about the lections learned in an especific stage.");
+        System.out.println("8. Get informed about which is the project with more capsules registered.");
+        System.out.println("9. Get informed about if a worker has registered capsules.");
+        System.out.println("10. Get informed about a learned lection according to its hashtags.");
+        System.out.println("11. Exit.");
         System.out.println(" ");
         System.out.println("--------------------------------------------");
 
@@ -107,20 +110,30 @@ public class Main{
                 System.out.println(" ");
                 publishCapsule();    
                 break;
-
-            case 6:
-
-                System.out.println("Goodbye.");
-                break;
             
-            case 7:
+            case 6:
 
                 showCapsulesByType();
                 break;
             
-            case 8:
+            case 7:
 
                 showCapsulesLection();
+                break;
+
+            case 8:
+
+                searchProjectWithMoreCapsules();
+                break;
+            
+            case 9:
+
+                searchCapsulesByWorker();
+                break;
+            
+            case 11:
+
+                System.out.println("Goodbye.");
                 break;
         }
     }
@@ -195,9 +208,8 @@ public class Main{
         String projectName = "";
         String clientName = "";
         String expectedStartDateStr; 
-        String expectedStartDateStageStr;
         String expectedEndDateStr;
-        String realStartStageDateStr;
+
         double budget = 0.0;
         
         System.out.println("Type the name of the project: ");
@@ -337,6 +349,33 @@ public class Main{
 
         String inform = projectController.showCapsulesLections(projectName, stage);
         System.out.println("The lections are: " + inform);
+    }
+
+/**
+ * This function searches for a project with the highest number of capsules and prints the result.
+ */
+    public void searchProjectWithMoreCapsules(){
+
+        String inform = projectController.searchProjectWithMoreCapsules();
+
+        System.out.println(inform);
+    }
+
+/**
+ * This function ask the user to input a worker's name and then calls a method to search for
+ * capsules associated with that worker.
+ */
+    public void searchCapsulesByWorker(){
+
+        String workerName = " ";
+
+        System.out.println("Type the name of the worker: ");
+        workerName = reader.next();
+
+        String inform = projectController.searchCapsulesByWorker(workerName);
+
+        System.out.println(inform);
+
     }
 
 /**

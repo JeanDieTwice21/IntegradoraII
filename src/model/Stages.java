@@ -36,6 +36,19 @@ public class Stages{
 
     }
 
+    public int countCapsules(){
+        
+        int capsulesCounter = 0;
+
+        for(int i = 0; i < SIZE; i++){
+            if(capsules[i] != null){
+                capsulesCounter += 1;
+            }
+        }
+
+        return capsulesCounter;
+    }
+
 /**
  * The function returns an array of Capsule objects.
  * 

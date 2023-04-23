@@ -10,12 +10,13 @@ public class Capsule{
     private String workerName;
     private String workerCharge;
     private String lection;
+    private String hashtags;
     private boolean approveStatus;
     private boolean isPublished;
     private Calendar approveDate;
     
 
-    public Capsule(String id, Type type, String description, String workerName, String workerCharge, String lection){
+    public Capsule(String id, Type type, String description, String workerName, String workerCharge, String lection, String hashtags){
 
         this.id = id;
         this.type = type;
@@ -23,12 +24,42 @@ public class Capsule{
         this.workerName = workerName;
         this.workerCharge = workerCharge;
         this.lection = lection;
+        this.hashtags = hashtags;
         this.approveStatus = false;
         this.isPublished = false;
 
     }
 
 
+/**
+ * This function searches for a specific hashtag in a string of hashtags and returns a
+ * corresponding message.
+ * 
+ * @param hashtagtoSearch A String representing the hashtag to search for in the "hashtags" variable.
+ * @return The method is returning a String message. If the hashtag to search is found in the
+ * "hashtags" variable, the method will return the "lection" variable. Otherwise, it will return the
+ * message "No se encontro el hashtag" (which means "Hashtag not found" in Spanish).
+ */
+    public String getLectionByHashtag(String hashtagtoSearch){
+
+        String msg = "No se encontro el hashtag";
+        String[] keywords = hashtags.split("#");
+
+        for(int i = 0; i < keywords.length; i++){
+            if(keywords[i].equals(hashtagtoSearch)){
+                msg = lection;
+            }
+        }
+
+        return msg;
+    }
+
+
+/**
+ * The function returns the name of a worker.
+ * 
+ * @return The method is returning a String value which represents the worker's name.
+ */
     public String getWorker(){
         return workerName;
     }
@@ -100,7 +131,7 @@ public class Capsule{
 /**
  * This function sets the publish date of an object to a new calendar date.
  * 
- * @param newPublishDate A Calendar object representing the new publish date to be set for an instance
+ * @param approvedDate A Calendar object representing the new publish date to be set for an instance
  * variable called publishDate.
  */
     public void setApproveDate(Calendar approvedDate){

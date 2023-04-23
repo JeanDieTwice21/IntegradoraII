@@ -90,7 +90,7 @@ public class Main{
                 finishStage();
                 setStartDates();
                 setEndDates();
-                
+
                 break;
             
             case 3:
@@ -131,17 +131,17 @@ public class Main{
             
             case 9:
 
-                searchCapsulesByWorker();
+                validateIfWokerHasRegisteredCapsules();
                 break;
             
+            case 10:
+
+                searchLectionsByKeyword();
+                break;
+
             case 11:
 
                 System.out.println("Goodbye.");
-                break;
-            
-            case 12:
-
-                tester();
                 break;
         }
     }
@@ -176,6 +176,7 @@ public class Main{
         String workerName = "";
         String workerCharge = "";
         String lection = "";
+        String hashtags = " ";
         int type = 0;
         String projectName = " ";
          
@@ -198,9 +199,12 @@ public class Main{
         workerCharge = reader.next();
         System.out.println("Type the lection to save: ");
         reader.next();
-        lection = reader.nextLine(); 
+        lection = reader.nextLine();
+        System.out.println("Type the hashtags asociated: ");
+        reader.next();
+        hashtags = reader.nextLine(); 
 
-        String confirmMessage = projectController.addCapsule(projectName, type, id, description, workerName, workerCharge, lection); 
+        String confirmMessage = projectController.addCapsule(projectName, type, id, description, workerName, workerCharge, lection, hashtags); 
 
 
         System.out.println(confirmMessage);
@@ -270,10 +274,11 @@ public class Main{
         System.out.println(confirmMsg);
     }
 
-/**
- * This function finishes the current stage of a project and initiates the next stage by taking input
- * from the user for project name, end date, and estimated amount of months for the next stage.
- */
+
+ /**
+  * This function prompts the user to input the name of a project and the current date, then uses
+  * a project controller to finish the current stage of the project and outputs a confirmation message.
+  */
     public void finishStage() throws Exception{
 
         String confirmMsg = " ";
@@ -295,6 +300,9 @@ public class Main{
 
     }
 
+/**
+ * This function sets the start dates for a project based on user input of the project name.
+ */
     public void setStartDates(){
 
         String projectName = " ";
@@ -304,6 +312,10 @@ public class Main{
         projectController.setStartDates(projectName);
     }
 
+/**
+ * This function sets the end dates for a project based on user input for the project name and the
+ * number of months required to complete the next stage.
+ */
     public void setEndDates(){
 
         String projectName = " ";
@@ -363,6 +375,9 @@ public class Main{
         System.out.println(url);
     }
 
+/**
+ * This function prints out information about capsules grouped by their type.
+ */
     public void showCapsulesByType(){
         
         String inform = projectController.showCapsulesByType();
@@ -370,6 +385,10 @@ public class Main{
         System.out.println(inform);
     }
 
+/**
+ * This function prompts the user to input a project name and stage, then calls a method to retrieve
+ * and display the lections associated with that project and stage.
+ */
     public void showCapsulesLection(){
         
         String projectName = " ";
@@ -404,8 +423,7 @@ public class Main{
  * This function ask the user to input a worker's name and then calls a method to search for
  * capsules associated with that worker.
  */
-    public void searchCapsulesByWorker(){
-
+    public void validateIfWokerHasRegisteredCapsules(){
         String workerName = " ";
 
         System.out.println("Type the name of the worker: ");
@@ -417,13 +435,21 @@ public class Main{
 
     }
 
-    public void tester(){
+/**
+ * This function prompts the user to input a hashtag and then calls a method to search for
+ * lectures that contain that hashtag.
+ */
+    public void searchLectionsByKeyword(){
 
-        System.out.println("Nombre poryecto: ");
-        String projectName = reader.next();
+        String hashtag = " ";
 
-        System.out.println(projectController.tester(projectName));
+    
+        System.out.println("Type the hashtag to search: ");
+        hashtag = reader.next();
+
+        System.out.println(projectController.searchLectionByHashtag(hashtag));
     }
+
 
 /**
  * The function converts a string date in the format "dd/MM/yyyy" to a Calendar object.

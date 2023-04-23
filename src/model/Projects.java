@@ -23,17 +23,13 @@ public class Projects{
         stages = new Stages[SIZE_STAGES];
     }
 
-    public String verEtapas(){
 
-        String msg = " ";
-
-        for(int i = 0; i < SIZE_STAGES; i++){
-            msg += stages[i].getName() + ",";
-        }
-
-        return msg;
-    }
-
+/**
+ * The function returns the total number of capsules across all stages.
+ * 
+ * @return The method is returning an integer value, which represents the total number of capsules in
+ * all stages.
+ */
     public int searchAmountCapsules(){
 
         int capsulesCounter = 0;
@@ -59,22 +55,6 @@ public class Projects{
 
     }
 
-    public Stages currentState(){
-
-        Stages currentState = null;
-        boolean flag = false;
-
-        for(int i = 0; i < SIZE_STAGES && !flag; i++ ){
-
-            if(stages[i] != null && stages[i].getStatus() == true){
-
-                currentState = stages[i];
-                flag = true;
-            }
-        }
-
-        return currentState;
-    }
 
 /**
  * The function returns an array of Stages.

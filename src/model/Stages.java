@@ -27,6 +27,13 @@ public class Stages{
 
     }
 
+ /**
+  * This function adds a capsule to an array if a certain condition is met.
+  * 
+  * @param isActivated A boolean value indicating whether the capsule can be added or not. If it is
+  * true, the capsule can be added, otherwise it cannot.
+  * @param capsule an object of the Capsule class that is being added to an array called "capsules".
+  */
     public void addCapsule(boolean isActivated, Capsule capsule){
 
         if(isActivated == true ){
@@ -38,6 +45,11 @@ public class Stages{
 
     }
 
+/**
+ * The function returns the name of an object.
+ * 
+ * @return The method `getName()` is returning the value of the variable `name`.
+ */
     public String getName(){
         return name;
     }
@@ -171,7 +183,7 @@ public class Stages{
     }
 
 /**
- * This Java function sets the status of an object's activation to a boolean value.
+ * This function sets the status of an object's activation to a boolean value.
  * 
  * @param status a boolean value representing the status to be set for the object. If it is true, it
  * means the object is activated, and if it is false, it means the object is deactivated.

@@ -49,6 +49,7 @@ public class ProjectManage{
  * @param projectName a String representing the name of the project
  * @param expectedStartDate The expected start date for the first stage of the project.
  * @param realStartDate The actual start date of a project stage.
+ * @param firstStageMonths The months that requires de first stage.
  */
 	public String initStages(String projectName, Calendar expectedStartDate, Calendar realStartDate, int firstStageMonths) throws Exception{
 		
@@ -110,14 +111,15 @@ public class ProjectManage{
  * This function adds a capsule to the current stage of a project
  * 
  * @param projectName The name of the project
+ * @param type An int representing the type of the capsule.
  * @param capsuleId The id of the capsule
- * @param capsuleType 
  * @param capsuleDescription A description of the capsule.
  * @param capsuleWorkerName The name of the worker who is assigned to the capsule.
  * @param capsuleWorkerCharge The charge of the worker in the capsule
  * @param capsuleLection The lection of the capsule.
+ * @param capsuleHashtags The hashtags asociated with the capsule.
  */
-	public String addCapsule(String projectName, int type, String capsuleId, String capsuleDescription, String capsuleWorkerName, String capsuleWorkerCharge, String capsuleLection){
+	public String addCapsule(String projectName, int type, String capsuleId, String capsuleDescription, String capsuleWorkerName, String capsuleWorkerCharge, String capsuleLection, String capsuleHashtags){
 		
 		Type capsuleType = null;
 		String msg = "The capsule hasnt been registed";
@@ -155,7 +157,7 @@ public class ProjectManage{
 								experiencesCounter += 1;
 							}
 
-							Capsule capsule = new Capsule(capsuleId, capsuleType, capsuleDescription, capsuleWorkerName, capsuleWorkerCharge, capsuleLection);
+							Capsule capsule = new Capsule(capsuleId, capsuleType, capsuleDescription, capsuleWorkerName, capsuleWorkerCharge, capsuleLection, capsuleHashtags);
 							
 							activatedStatus = stages[o].getStatus();
 							stages[o].addCapsule(activatedStatus, capsule);
@@ -184,7 +186,7 @@ public class ProjectManage{
  * 
  * @param projectName The name of the project
  * @param capsuleId The id of the capsule to be approved.
- * @param publishDate The date the capsule wash published.
+ * @param approveDate The date the capsule wash published.
  * @param newStatus The new approved status of the capsule.
  * @return The method is returning a String.
  */
@@ -268,7 +270,7 @@ public class ProjectManage{
 										if(capsules[u].getIsPublished() == false){
 											capsules[u].setIsPublished(newPublishedStatus);
 											isFoundCapsule = true;
-											msg =  "https/GreenCapsule" + capsuleId + ".net";
+											msg =  "The capsule " + capsuleId + " has been published. Heres the URL: https/GreenCapsule/" + capsuleId + ".net";
 										}
 										else{
 											msg = "The capsule is already published.";
@@ -300,13 +302,17 @@ public class ProjectManage{
 	}		
 		
          
-    
 
-
-/**
- * If the current stage is not the last stage, then deactivate the current stage and activate the next
- * stage
- */
+	/**
+	 * This function deactivates the current stage of a project and activates the next stage if it exists,
+	 * and sets the real end date of the current stage.
+	 * 
+	 * @param projectName a String variable representing the name of the project to finish a stage for.
+	 * @param endDate A Calendar object representing the date on which the current stage of a project is
+	 * finished.
+	 * @return A String message indicating that the current stage has been deactivated and the next stage
+	 * has been activated.
+	 */
 	public String finishStage(String projectName, Calendar endDate){
 
 		String msg = " ";
@@ -343,6 +349,13 @@ public class ProjectManage{
 
 	}
 
+/**
+ * This function sets the real and expected start dates for a stage in a project based on the end date
+ * of the previous stage.
+ * 
+ * @param projectName a String representing the name of the project for which the start dates of stages
+ * need to be set.
+ */
 	public void setStartDates(String projectName){
 
 		boolean isFoundProject = false;
@@ -364,6 +377,14 @@ public class ProjectManage{
 		}
 	}
 
+/**
+ * This function sets the expected end dates for a project's stages based on the given project name and
+ * amount of months.
+ * 
+ * @param projectName A String representing the name of the project for which the end dates of stages
+ * need to be set.
+ * @param amountMonths The number of months to add to the expected end date of a stage in a project.
+ */
 	public void setEndDates(String projectName, int amountMonths){
 
 		boolean isFoundProject = false;
@@ -383,6 +404,12 @@ public class ProjectManage{
 		}
 	}
 
+/**
+ * The function returns a message displaying the amount of capsules for each type.
+ * 
+ * @return A string message that shows the amount of capsules for each type (technical, management,
+ * domain, and experiences).
+ */
 	public String showCapsulesByType(){
 
 		String msg = "The amount of technical capsules is : " + technicalCounter + "\n" + "The amount of management capsules is: " + managementCounter + "\n" + "The amount of domain capsules is: " + domainCounter + "\n" + "The amount of experiences capsules is: " + experiencesCounter;
@@ -391,6 +418,17 @@ public class ProjectManage{
 	
 	}
 
+/**
+ * This function returns a string containing the lections of capsules in a specific stage of a project,
+ * given the project name and stage position.
+ * 
+ * @param projectName A String representing the name of the project for which the capsules' lections
+ * are to be shown.
+ * @param stagesPos The position of the stage in the array of stages for a specific project.
+ * @return The method is returning a String message that contains the lections of the capsules in a
+ * specific stage of a project. If the project is not found, the message will indicate that there are
+ * no registered projects.
+ */
 	public String showCapsulesLections(String projectName, int stagesPos){
 
 		String msg = " ";
@@ -421,6 +459,15 @@ public class ProjectManage{
 		
 	
 
+/**
+ * This function searches for capsules registered by a specific worker and returns a message indicating
+ * whether or not the worker has registered any capsules.
+ * 
+ * @param workerName A String representing the name of the worker whose capsules need to be searched.
+ * @return The method is returning a message indicating whether or not a worker has registered capsules
+ * in the projects. The message will either say "Yes, the worker [workerName] has registered capsules"
+ * or "No, the worker [workerName] hasn't registered capsules".
+ */
 	public String searchCapsulesByWorker(String workerName){
 		
 		String msg = " ";
@@ -454,50 +501,16 @@ public class ProjectManage{
 			}
 				return msg;
 		}
-
-		public String[] searchLections(String projectName){
-			
-			boolean isFoundProject = false;
-			String[] keywords = null;
-			String lections = " ";
-			int count = 0;
-			
-			for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
-				if(projects[i] != null && projects[i].getName().equals(projectName)){
-						Stages[] stages = projects[i].getStages();
-						isFoundProject = true;
-						for(int j = 0; j < stages.length; j++){
-							Capsule[] capsules = stages[j].getCapsules();
-							for(int z = 0; z < capsules.length; z++){
-								if(capsules[z] != null && capsules[z].getApproveStatus() == true && capsules[z].getIsPublished() == true){
-
-									lections += capsules[z].getLection() + "\n";
-
-									String [] subStrings = lections.split("#");
-									count += subStrings.length;
-
-									keywords = new String[count];
-									for(int k = 0; k < subStrings.length; k++){
-										keywords[k] = subStrings[k].trim();
-									}
-
-								}
-							}
-						}
-				}
-
-			}			
-
-
-			return keywords;
-
-			}
-
-
-
-			
 		
 
+/**
+ * This function searches for the project with the highest number of capsules and returns a message
+ * with the project name and number of capsules.
+ * 
+ * @return The method is returning a String message that indicates the project with the highest number
+ * of capsules. If there are no projects in the array, the message will indicate that it did not enter
+ * the loop.
+ */
  	public String searchProjectWithMoreCapsules(){
 		
 		int capsulesCounter = 0;
@@ -524,31 +537,35 @@ public class ProjectManage{
 		return msg;
 	}
 
-	 
 
-	public String tester(String projectName){
+/**
+ * The function searches for a specific hashtag in all published capsules and returns the corresponding
+ * lecture.
+ * 
+ * @param hashtag A string representing the hashtag to search for in the lections.
+ * @return The method is returning a String message that contains all the lections that have the
+ * specified hashtag and are approved and published.
+ */
+	public String searchLectionByHashtag(String hashtag){
 
-		String msg = "No entra a los if.";
-		boolean isFound = false;
+		String msg = " ";
 
-		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
+		for(int i = 0; i < SIZE_ARRAY; i++){
 			if(projects[i] != null){
-				if(projects[i].getName().equalsIgnoreCase(projectName)){
+				Stages[] stages = projects[i].getStages();
+				for(int j = 0; j < stages.length; j++){
+					Capsule[] capsules = stages[j].getCapsules();
+					for(int k = 0; k < capsules.length; k++){
+						if(capsules[k] != null && capsules[k].getApproveStatus() == true && capsules[k].getIsPublished() == true){
+							msg += capsules[k].getLectionByHashtag(hashtag);
+						}
+					}
+				}
+			}
 
-					msg = projects[i].verEtapas();
-					isFound = true;
-				}
-				else{
-					msg = "Falla el .equals";
-				}
-				
-			}
-			else{
-				msg = "Falla el != null";
-			}
 		}
 
-				return msg;
+		return msg;
 	}
 
 
@@ -570,23 +587,6 @@ public class ProjectManage{
 		}
 		return pos; 
 	}
-
-	public boolean checkProjectArray(){
-
-		boolean isFound = false;
-		boolean confirmVar = false;
-
-		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
-			if(projects[i] != null){
-
-				confirmVar = true;
-
-			}
-		}
-
-		return confirmVar;
-	}
-
 
 
 }

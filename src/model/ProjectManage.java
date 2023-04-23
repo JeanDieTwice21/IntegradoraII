@@ -25,13 +25,20 @@ public class ProjectManage{
   * @param expectedEndDate The date the project is expected to end.
   * @param budget The budget of the project.
   */
-    public void addProject(String projectName, String clientName, Calendar expectedStartDate, Calendar expectedEndDate, double budget){
-	
-		Projects project = new Projects(projectName, clientName, expectedStartDate, expectedEndDate, budget); 
+    public String addProject(String projectName, String clientName, Calendar expectedStartDate, Calendar expectedEndDate, double budget){
+		
+		String msg = " ";
 		int pos = getFirstValidPosition();
 		if(pos != -1){
+			Projects project = new Projects(projectName, clientName, expectedStartDate, expectedEndDate, budget); 
 		    projects[pos] = project; 
+			msg = "Project information registered.";
 		}
+		else{
+			msg = "Error: Projects array full";
+		}
+
+		return msg;
 	}
 
 
@@ -43,8 +50,9 @@ public class ProjectManage{
  * @param expectedStartDate The expected start date for the first stage of the project.
  * @param realStartDate The actual start date of a project stage.
  */
-	public void initStages(String projectName, Calendar expectedStartDate, Calendar realStartDate) throws Exception{
+	public String initStages(String projectName, Calendar expectedStartDate, Calendar realStartDate, int firstStageMonths) throws Exception{
 		
+		String msg = " ";
 		String refillDateStr = "01/01/2001";
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		boolean isFound = false;
@@ -56,38 +64,46 @@ public class ProjectManage{
 
 		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
 
-			if(projects[i] != null){
-				if(projects[i].getName().equals(projectName)){
+			if(projects[i] != null && projects[i].getName().equalsIgnoreCase(projectName)){
+				
 
-					Stages startStage = new Stages(expectedStartDate, realStartDate);
+					Stages startStage = new Stages("StartStage", expectedStartDate, realStartDate);
 					boolean stageStatus = startStage.getStatus();
 					if(stageStatus == false){
 						stageStatus = true;
 						startStage.setStatus(stageStatus);
+						startStage.setExpectedEndDate(firstStageMonths);
 					}
+					
 					projects[i].addStage(startStage);
 
-					Stages analytStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					Stages analytStage = new Stages("AnalytStage", expectedStartDateEmpt, realStartDateEmpt);
 					projects[i].addStage(analytStage);
 	
-					Stages designStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					Stages designStage = new Stages("DesignStage", expectedStartDateEmpt, realStartDateEmpt);
 					projects[i].addStage(designStage);
 	
-					Stages executStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					Stages executStage = new Stages("ExecutStage", expectedStartDateEmpt, realStartDateEmpt);
 					projects[i].addStage(executStage);
 	
-					Stages closeStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					Stages closeStage = new Stages("CloseStage", expectedStartDateEmpt, realStartDateEmpt);
 					projects[i].addStage(closeStage);
 
-					Stages followAndControlStage = new Stages(expectedStartDateEmpt, realStartDateEmpt);
+					Stages followAndControlStage = new Stages("FollowAndControlStage", expectedStartDateEmpt, realStartDateEmpt);
 					projects[i].addStage(followAndControlStage);
 
 					isFound = true;
+					msg = "The stages has been registed. Only the start stage has been activated";
 
+			
 			}
+			else{
+				msg = "Cant find projects.";
 			}
 
 		}
+
+		return msg;
 	}
 
 /**
@@ -149,10 +165,10 @@ public class ProjectManage{
 					}
 				}
 				else{
-					msg = "The project wastn found";
+					msg = "The project wasnt found";
 				}
 			}
-			else if(projects[i] == null){
+			else{
 				msg = "Theres isnt any registed projects.";
 			}
 		}
@@ -190,14 +206,14 @@ public class ProjectManage{
 							isFoundStage = true;
 							for(int u = 0; u < capsules.length && !isFoundCapsule; u++){
 								if(capsules[u].getId().equals(capsuleId)){
-									if(newStatus == true){
+									if(newStatus == true && capsules[u].getApproveStatus() == false){
 										capsules[u].setApproveStatus(newStatus);
 										capsules[u].setApproveDate(approveDate);
-										msg = "The status of the capsule " + capsuleId + " has been changed to approved. Approve Date: " + approveDate;
+										msg = "The status of the capsule " + capsuleId + " has been changed to approved.";
 										isFoundCapsule = true;
 									 }
-									else if(newStatus == false){
-										msg = "The status hasnt changed, the capsule still innapproved.";
+									else if(capsules[u].getApproveStatus() == true){
+										msg = "The capsules is already aproved.";
 									}     									
 	
 								}
@@ -215,7 +231,7 @@ public class ProjectManage{
 						msg = "The project wanst found";
 					}
 			}
-			else if(projects[i] == null){
+			else{
 				msg = "There isnt any project registered.";
 			}
 			}			
@@ -242,7 +258,7 @@ public class ProjectManage{
 				if(projects[i].getName().equals(projectName)){
 					Stages[] stages = projects[i].getStages();
 					isFoundProject = true;
-					for(int o = 0; o < stages.length && isFoundStage; o++){
+					for(int o = 0; o < stages.length && !isFoundStage; o++){
 						if(stages[o].getStatus() == true){
 							Capsule[] capsules = stages[o].getCapsules();
 							isFoundStage = true;
@@ -291,25 +307,31 @@ public class ProjectManage{
  * If the current stage is not the last stage, then deactivate the current stage and activate the next
  * stage
  */
-	public void finishStage(String projectName, Calendar endDate, int amountMonths){
+	public String finishStage(String projectName, Calendar endDate){
 
+		String msg = " ";
 		boolean isFoundProject = false;
+		boolean isFoundStage = false;
+		boolean activateStage = true;
+		boolean deactivateStage = false;
 
 		for(int o = 0; o < SIZE_ARRAY && !isFoundProject; o++){
 			if(projects[o] != null){
 				if(projects[o].getName().equals(projectName)){
 					Stages[] stages = projects[o].getStages();
 					isFoundProject = true;
-					for(int i = 0; i < stages.length && !stages[i].isActivated; i++){
-						if(i < stages.length){
-							stages[i].isActivated = false;
+					for(int i = 0; i < stages.length && !isFoundStage; i++){
+						if(i < stages.length && stages[i] != null && stages[i].getStatus() == true){
+							
+							stages[i].setStatus(deactivateStage);
+							stages[i].setRealEndDate(endDate);
+							isFoundStage = true;
 						}
 						if(i < stages.length - 1){
-							stages[i+1].isActivated = true;
-							Calendar newStartDate = stages[i].getRealEndDate();
-							stages[i+1].setExpectedStartDate(newStartDate);
-							stages[i+1].setRealStartDate(newStartDate);
-							stages[i+1].setExpectedEndDate(amountMonths);
+							
+							stages[i+1].setStatus(activateStage);
+
+							msg = "The current stage has been deactivaded. The next stage has been activated";
 						}
 					}
 				}
@@ -317,7 +339,48 @@ public class ProjectManage{
 
 		}
 
+		return msg;
 
+	}
+
+	public void setStartDates(String projectName){
+
+		boolean isFoundProject = false;
+		boolean isFoundStage = false;
+
+		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			if(projects[i] != null && projects[i].getName().equalsIgnoreCase(projectName)){
+				Stages[] stages = projects[i].getStages();
+				for(int j = 0; j < stages.length && !isFoundStage; j++){
+					if(i < stages.length && stages[i].getStatus() == true){
+						isFoundStage = true;
+						Calendar newStartDate = stages[j-1].getRealEndDate();
+						stages[j].setRealStartDate(newStartDate);
+						stages[j].setExpectedStartDate(newStartDate);
+					}
+				}
+
+			}
+		}
+	}
+
+	public void setEndDates(String projectName, int amountMonths){
+
+		boolean isFoundProject = false;
+		boolean isFoundStage = false;
+
+		for(int i = 0; i < SIZE_ARRAY && !isFoundProject; i++){
+			if(projects[i] != null && projects[i].getName().equalsIgnoreCase(projectName)){
+				Stages[] stages = projects[i].getStages();
+				for(int j = 0; j < stages.length && !isFoundStage; j++){
+					if(i < stages.length && stages[i].getStatus() == true){
+						isFoundStage = true;
+						stages[i].setExpectedEndDate(amountMonths);
+					}
+				}
+
+			}
+		}
 	}
 
 	public String showCapsulesByType(){
@@ -375,11 +438,11 @@ public class ProjectManage{
 							if(capsules[z] != null){
 								
 								if(capsules[z].getWorker().equals(workerName)){
-									msg = "Yes, the worker " + workerName + "has registed capsules.";
+									msg = "Yes, the worker " + workerName + " has registed capsules.";
 								}
 								else{
 	
-									msg = "No, the worker " + workerName + "hasnt registed capsules.";
+									msg = "No, the worker " + workerName + " hasnt registed capsules.";
 	
 								}
 							}
@@ -438,24 +501,55 @@ public class ProjectManage{
  	public String searchProjectWithMoreCapsules(){
 		
 		int capsulesCounter = 0;
-		String msg = " ";
+		String msg = "No entro al ciclo";
 		String projectName = " ";
 		int maxCapsules = 0;
 
 		for(int i = 0; i < SIZE_ARRAY; i++){
 			if(projects[i] != null){
+
 			 	capsulesCounter = projects[i].searchAmountCapsules();
+
 			 	if(capsulesCounter > maxCapsules){
+					
 					maxCapsules = capsulesCounter;
 					projectName = projects[i].getName();
-					msg = "The project with more capsules is: " + projectName + " with " + maxCapsules;
+					msg = "The project with more capsules is: " + projectName + " with " + maxCapsules + " capsules";
+
 				 }
 			}
 
 		}
 
 		return msg;
-	} 	
+	}
+
+	 
+
+	public String tester(String projectName){
+
+		String msg = "No entra a los if.";
+		boolean isFound = false;
+
+		for(int i = 0; i < SIZE_ARRAY && !isFound; i++){
+			if(projects[i] != null){
+				if(projects[i].getName().equalsIgnoreCase(projectName)){
+
+					msg = projects[i].verEtapas();
+					isFound = true;
+				}
+				else{
+					msg = "Falla el .equals";
+				}
+				
+			}
+			else{
+				msg = "Falla el != null";
+			}
+		}
+
+				return msg;
+	}
 
 
 

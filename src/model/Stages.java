@@ -6,17 +6,19 @@ import java.text.SimpleDateFormat;
 public class Stages{
 
     public static final int SIZE =  50;
+    private String name;
     private Calendar expectedStartDate;
     private Calendar expectedEndDate;
     private Calendar realStartDate;
     private Calendar realEndDate;
-    public boolean approveStage;
-    public boolean isActivated;
+    private boolean approveStage;
+    private boolean isActivated;
     private Capsule[] capsules;
 
 
-    public Stages(Calendar expectedStartDate, Calendar realStartDate){
+    public Stages(String name, Calendar expectedStartDate, Calendar realStartDate){
         
+        this.name = name;
         this.expectedStartDate = expectedStartDate; 
         this.realStartDate = realStartDate;
         this.approveStage = false;
@@ -36,6 +38,16 @@ public class Stages{
 
     }
 
+    public String getName(){
+        return name;
+    }
+
+/**
+ * The function counts the number of capsules.
+ * 
+ * @return The method `countCapsules()` returns an integer value, which represents the number of
+ * capsules.
+ */
     public int countCapsules(){
         
         int capsulesCounter = 0;
@@ -102,8 +114,7 @@ public class Stages{
  */
     public void setExpectedEndDate(int monthsToAdd){
 
-        Calendar expectedStart = getExpectedStartDate();
-        Calendar expectedEndDate = (Calendar) expectedStart.clone();
+        Calendar expectedEndDate = (Calendar) getExpectedStartDate().clone();
         expectedEndDate.add(Calendar.MONTH, monthsToAdd);
 
         this.expectedEndDate = expectedEndDate;

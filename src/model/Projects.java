@@ -23,12 +23,23 @@ public class Projects{
         stages = new Stages[SIZE_STAGES];
     }
 
+    public String verEtapas(){
+
+        String msg = " ";
+
+        for(int i = 0; i < SIZE_STAGES; i++){
+            msg += stages[i].getName() + ",";
+        }
+
+        return msg;
+    }
+
     public int searchAmountCapsules(){
 
         int capsulesCounter = 0;
 
         for(int i = 0; i < SIZE_STAGES; i++){
-            capsulesCounter = stages[i].countCapsules();
+            capsulesCounter += stages[i].countCapsules();
         }
 
         return capsulesCounter;
@@ -46,6 +57,23 @@ public class Projects{
             stages[pos] = stage;
         }
 
+    }
+
+    public Stages currentState(){
+
+        Stages currentState = null;
+        boolean flag = false;
+
+        for(int i = 0; i < SIZE_STAGES && !flag; i++ ){
+
+            if(stages[i] != null && stages[i].getStatus() == true){
+
+                currentState = stages[i];
+                flag = true;
+            }
+        }
+
+        return currentState;
     }
 
 /**

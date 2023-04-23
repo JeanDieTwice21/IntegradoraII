@@ -88,6 +88,9 @@ public class Main{
                 System.out.println("You choosed to finish a project stage.");
                 System.out.println(" ");
                 finishStage();
+                setStartDates();
+                setEndDates();
+                
                 break;
             
             case 3:
@@ -134,6 +137,11 @@ public class Main{
             case 11:
 
                 System.out.println("Goodbye.");
+                break;
+            
+            case 12:
+
+                tester();
                 break;
         }
     }
@@ -205,6 +213,7 @@ public class Main{
  */
     public void registProject() throws Exception{
         
+        String confirmMsg = " ";
         String projectName = "";
         String clientName = "";
         String expectedStartDateStr; 
@@ -225,8 +234,8 @@ public class Main{
         System.out.println("Type the budget of the project");
         budget = reader.nextDouble();
 
-        projectController.addProject(projectName, clientName, expectedStartDate, expectedEndDate, budget);
-
+        confirmMsg = projectController.addProject(projectName, clientName, expectedStartDate, expectedEndDate, budget);
+        System.out.println(confirmMsg);
     }
 
 /**
@@ -235,23 +244,30 @@ public class Main{
  */
     public void registStages() throws Exception{
 
+        String confirmMsg = " ";
         String projectName = " ";
         String expectedStartDateStageStr = " ";
         String realStartStageDateStr = " ";
+        int firstStageMonths = 0;
 
         System.out.println("Confirm the name of the project: ");
         projectName = reader.next();
         System.out.println("Now, please, type the expected start date for the first stage: ");
         expectedStartDateStageStr = reader.next();
-        Calendar expectedStartDateStage = stringsToCalendar(expectedStartDateStageStr);
-
         System.out.println("Type the real start date for the first stage: ");
         realStartStageDateStr = reader.next();
-        Calendar realStartDate = stringsToCalendar(realStartStageDateStr);
+        System.out.println("Type the amount of months for the first stage:");
+        firstStageMonths = reader.nextInt();
 
-        projectController.initStages(projectName, expectedStartDateStage, realStartDate);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar expectedStartDateStage = Calendar.getInstance();
+        expectedStartDateStage.setTime(format.parse(expectedStartDateStageStr));
+        Calendar realStartDate = Calendar.getInstance();
+        realStartDate.setTime(format.parse(realStartStageDateStr));
 
-        System.out.println("The project has been registed succesfully.");
+        confirmMsg = projectController.initStages(projectName, expectedStartDateStage, realStartDate, firstStageMonths);
+
+        System.out.println(confirmMsg);
     }
 
 /**
@@ -260,22 +276,45 @@ public class Main{
  */
     public void finishStage() throws Exception{
 
+        String confirmMsg = " ";
         String endDateStr = " ";
-        int amountMonths = 0;
         String projectName = " ";
 
         System.out.println("Type the name of the project: ");
         projectName =reader.next();
         System.out.println("The current stage will be finished. Please, type today's date: ");
         endDateStr = reader.next();
-        Calendar endDate = stringsToCalendar(endDateStr);
-        System.out.println("Type the estimated amount of months for the next stage: ");
-        amountMonths = reader.nextInt();
 
-        projectController.finishStage(projectName, endDate, amountMonths);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(format.parse(endDateStr));
 
-        System.out.println("The current stage was finished succesfully. The next stage has been initiated.");
+        confirmMsg = projectController.finishStage(projectName, endDate);
 
+        System.out.println(confirmMsg);
+
+    }
+
+    public void setStartDates(){
+
+        String projectName = " ";
+    
+        System.out.println("For the next two steps, the user has to confirm the project name twice: ");
+        projectName = reader.next();
+        projectController.setStartDates(projectName);
+    }
+
+    public void setEndDates(){
+
+        String projectName = " ";
+        int monthsToAdd = 0;
+
+        System.out.println("Confirm the project name once again: ");
+        projectName = reader.next();
+        System.out.println("Type the amount of months required to complete the next stage: ");
+        monthsToAdd = reader.nextInt();
+
+        projectController.setEndDates(projectName, monthsToAdd);
     }
 
 /**
@@ -376,6 +415,14 @@ public class Main{
 
         System.out.println(inform);
 
+    }
+
+    public void tester(){
+
+        System.out.println("Nombre poryecto: ");
+        String projectName = reader.next();
+
+        System.out.println(projectController.tester(projectName));
     }
 
 /**
